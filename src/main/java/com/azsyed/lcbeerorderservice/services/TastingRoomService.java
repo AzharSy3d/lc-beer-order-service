@@ -54,7 +54,7 @@ public class TastingRoomService {
 
         BeerOrderLineDto beerOrderLine = BeerOrderLineDto.builder()
                 .upc(beerToOrder)
-                .orderQuantity(new Random().nextInt(Math.abs(5)+1)) //todo externalize value to property
+                .orderQuantity(new Random().nextInt(6)) //todo externalize value to property
                 .build();
 
         List<BeerOrderLineDto> beerOrderLineSet = new ArrayList<>();
