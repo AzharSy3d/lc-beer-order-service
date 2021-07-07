@@ -20,10 +20,13 @@ package com.azsyed.lcbeerorderservice.web.mappers;
 import com.azsyed.lcbeerorderservice.domain.BeerOrder;
 import com.azsyed.lcbeerorderservice.web.model.BeerOrderDto;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(uses = {DateMapper.class, BeerOrderLineMapper.class})
 public interface BeerOrderMapper {
 
+
+    @Mapping(target = "customerId",source = "customer.id")
     BeerOrderDto beerOrderToDto(BeerOrder beerOrder);
 
     BeerOrder dtoToBeerOrder(BeerOrderDto dto);
