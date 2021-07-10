@@ -18,8 +18,4 @@ public class BeerDto {
     private String upc;
     private BigDecimal price;
 
-
-
-
-
 }
