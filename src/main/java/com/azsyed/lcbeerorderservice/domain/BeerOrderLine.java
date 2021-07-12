@@ -50,6 +50,8 @@ public class BeerOrderLine extends BaseEntity {
     @ManyToOne
     private BeerOrder beerOrder;
 
+    @Type(type="org.hibernate.type.UUIDCharType")
+    @Column(length = 36, columnDefinition = "varchar(36)", updatable = false, nullable = false )
     private UUID beerId;
     private String upc;
     private Integer orderQuantity = 0;
