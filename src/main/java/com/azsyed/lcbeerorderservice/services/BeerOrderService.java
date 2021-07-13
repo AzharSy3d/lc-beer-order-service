@@ -18,8 +18,8 @@
 package com.azsyed.lcbeerorderservice.services;
 
 
-import com.azsyed.lcbeerorderservice.web.model.BeerOrderDto;
-import com.azsyed.lcbeerorderservice.web.model.BeerOrderPagedList;
+import com.azsyed.brewery.model.BeerOrderDto;
+import com.azsyed.brewery.model.BeerOrderPagedList;
 import org.springframework.data.domain.Pageable;
 
 import java.util.UUID;

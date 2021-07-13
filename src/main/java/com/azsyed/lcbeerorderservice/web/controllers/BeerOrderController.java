@@ -17,9 +17,9 @@
 
 package com.azsyed.lcbeerorderservice.web.controllers;
 
+import com.azsyed.brewery.model.BeerOrderDto;
+import com.azsyed.brewery.model.BeerOrderPagedList;
 import com.azsyed.lcbeerorderservice.services.BeerOrderService;
-import com.azsyed.lcbeerorderservice.web.model.BeerOrderDto;
-import com.azsyed.lcbeerorderservice.web.model.BeerOrderPagedList;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

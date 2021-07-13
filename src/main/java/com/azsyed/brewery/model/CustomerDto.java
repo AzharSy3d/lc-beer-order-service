@@ -15,40 +15,38 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.azsyed.lcbeerorderservice.web.model;
+package com.azsyed.brewery.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
-public class BeerOrderLineDto extends BaseItem {
+@AllArgsConstructor
+@Builder
+public class CustomerDto {
 
+    @JsonProperty("id")
+    private UUID id = null;
 
+    @JsonProperty("version")
+    private Integer version = null;
 
-    @Builder
-    public BeerOrderLineDto(UUID id, Integer version, OffsetDateTime createdDate, OffsetDateTime lastModifiedDate,
-                            String upc, String beerName,String beerStyle,BigDecimal price, UUID beerId, Integer orderQuantity) {
-        super(id, version, createdDate, lastModifiedDate);
-        this.upc = upc;
-        this.beerName = beerName;
-        this.beerStyle = beerStyle;
-        this.price = price;
-        this.beerId = beerId;
-        this.orderQuantity = orderQuantity;
-    }
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ", shape = JsonFormat.Shape.STRING)
+    @JsonProperty("createdDate")
+    private OffsetDateTime createdDate = null;
 
-    private String upc;
-    private String beerName;
-    private String beerStyle;
-    private UUID beerId;
-    private BigDecimal price;
-    private Integer orderQuantity = 0;
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ssZ", shape = JsonFormat.Shape.STRING)
+    @JsonProperty("lastModifiedDate")
+    private OffsetDateTime lastModifiedDate = null;
+
+    private String name;
+
 }

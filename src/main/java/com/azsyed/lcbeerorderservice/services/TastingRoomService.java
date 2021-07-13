@@ -1,11 +1,11 @@
 package com.azsyed.lcbeerorderservice.services;
 
+import com.azsyed.brewery.model.BeerOrderDto;
+import com.azsyed.brewery.model.BeerOrderLineDto;
 import com.azsyed.lcbeerorderservice.bootstrap.BeerOrderBootStrap;
 import com.azsyed.lcbeerorderservice.domain.Customer;
 import com.azsyed.lcbeerorderservice.repositories.BeerOrderRepository;
 import com.azsyed.lcbeerorderservice.repositories.CustomerRepository;
-import com.azsyed.lcbeerorderservice.web.model.BeerOrderDto;
-import com.azsyed.lcbeerorderservice.web.model.BeerOrderLineDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;

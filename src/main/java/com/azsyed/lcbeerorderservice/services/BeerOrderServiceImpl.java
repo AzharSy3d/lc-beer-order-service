@@ -17,14 +17,14 @@
 
 package com.azsyed.lcbeerorderservice.services;
 
+import com.azsyed.brewery.model.BeerOrderDto;
+import com.azsyed.brewery.model.BeerOrderPagedList;
 import com.azsyed.lcbeerorderservice.domain.BeerOrder;
 import com.azsyed.lcbeerorderservice.domain.Customer;
 import com.azsyed.lcbeerorderservice.domain.OrderStatusEnum;
 import com.azsyed.lcbeerorderservice.repositories.BeerOrderRepository;
 import com.azsyed.lcbeerorderservice.repositories.CustomerRepository;
 import com.azsyed.lcbeerorderservice.web.mappers.BeerOrderMapper;
-import com.azsyed.lcbeerorderservice.web.model.BeerOrderDto;
-import com.azsyed.lcbeerorderservice.web.model.BeerOrderPagedList;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;

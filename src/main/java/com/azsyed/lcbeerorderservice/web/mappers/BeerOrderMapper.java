@@ -17,8 +17,8 @@
 
 package com.azsyed.lcbeerorderservice.web.mappers;
 
+import com.azsyed.brewery.model.BeerOrderDto;
 import com.azsyed.lcbeerorderservice.domain.BeerOrder;
-import com.azsyed.lcbeerorderservice.web.model.BeerOrderDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

@@ -15,7 +15,7 @@
  *     along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package com.azsyed.lcbeerorderservice.web.model;
+package com.azsyed.brewery.model;
 
 public enum OrderStatusEnum {
     NEW, READY, PICKED_UP

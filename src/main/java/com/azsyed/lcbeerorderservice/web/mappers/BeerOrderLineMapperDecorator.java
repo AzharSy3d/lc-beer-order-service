@@ -1,9 +1,9 @@
 package com.azsyed.lcbeerorderservice.web.mappers;
 
+import com.azsyed.brewery.model.BeerOrderLineDto;
 import com.azsyed.lcbeerorderservice.domain.BeerOrderLine;
 import com.azsyed.lcbeerorderservice.services.beer.BeerService;
 import com.azsyed.lcbeerorderservice.services.beer.domain.BeerDto;
-import com.azsyed.lcbeerorderservice.web.model.BeerOrderLineDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
