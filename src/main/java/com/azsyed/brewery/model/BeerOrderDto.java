@@ -17,6 +17,7 @@
 
 package com.azsyed.brewery.model;
 
+import com.azsyed.lcbeerorderservice.domain.BeerOrderStatusEnum;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -51,6 +52,6 @@ public class BeerOrderDto{
     private UUID customerId;
     private String customerRef;
     private List<BeerOrderLineDto> beerOrderLines;
-    private OrderStatusEnum orderStatus;
+    private BeerOrderStatusEnum orderStatus;
     private String orderStatusCallbackUrl;
 }

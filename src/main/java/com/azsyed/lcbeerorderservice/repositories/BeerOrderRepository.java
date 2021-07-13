@@ -18,8 +18,8 @@ package com.azsyed.lcbeerorderservice.repositories;
 
 
 import com.azsyed.lcbeerorderservice.domain.BeerOrder;
+import com.azsyed.lcbeerorderservice.domain.BeerOrderStatusEnum;
 import com.azsyed.lcbeerorderservice.domain.Customer;
-import com.azsyed.lcbeerorderservice.domain.OrderStatusEnum;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -37,7 +37,7 @@ public interface BeerOrderRepository extends JpaRepository<BeerOrder, UUID> {
 
     Page<BeerOrder> findAllByCustomer(Customer customer, Pageable pageable);
 
-    List<BeerOrder> findAllByOrderStatus(OrderStatusEnum orderStatusEnum);
+    List<BeerOrder> findAllByOrderStatus(BeerOrderStatusEnum orderStatusEnum);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     BeerOrder findOneById(UUID id);

@@ -20,8 +20,8 @@ package com.azsyed.lcbeerorderservice.services;
 import com.azsyed.brewery.model.BeerOrderDto;
 import com.azsyed.brewery.model.BeerOrderPagedList;
 import com.azsyed.lcbeerorderservice.domain.BeerOrder;
+import com.azsyed.lcbeerorderservice.domain.BeerOrderStatusEnum;
 import com.azsyed.lcbeerorderservice.domain.Customer;
-import com.azsyed.lcbeerorderservice.domain.OrderStatusEnum;
 import com.azsyed.lcbeerorderservice.repositories.BeerOrderRepository;
 import com.azsyed.lcbeerorderservice.repositories.CustomerRepository;
 import com.azsyed.lcbeerorderservice.web.mappers.BeerOrderMapper;
@@ -79,7 +79,7 @@ public class BeerOrderServiceImpl implements BeerOrderService {
             BeerOrder beerOrder = beerOrderMapper.dtoToBeerOrder(beerOrderDto);
             beerOrder.setId(null); //should not be set by outside client
             beerOrder.setCustomer(customerOptional.get());
-            beerOrder.setOrderStatus(OrderStatusEnum.NEW);
+            beerOrder.setOrderStatus(BeerOrderStatusEnum.NEW);
 
             beerOrder.getBeerOrderLines().forEach(line -> line.setBeerOrder(beerOrder));
 
@@ -104,7 +104,7 @@ public class BeerOrderServiceImpl implements BeerOrderService {
     @Override
     public void pickupOrder(UUID customerId, UUID orderId) {
         BeerOrder beerOrder = getOrder(customerId, orderId);
-        beerOrder.setOrderStatus(OrderStatusEnum.PICKED_UP);
+        beerOrder.setOrderStatus(BeerOrderStatusEnum.PICKED_UP);
 
         beerOrderRepository.save(beerOrder);
     }
