@@ -1,9 +1,7 @@
 package com.azsyed.brewery.model.events;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.Accessors;
 
 import java.util.UUID;
 
@@ -13,6 +11,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class ValidateOrderResult {
-    private UUID beerOrderId;
+    private UUID orderId;
+    @Getter
+    @Accessors(fluent = true)
     private Boolean isValid;
 }

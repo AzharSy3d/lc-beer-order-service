@@ -13,6 +13,8 @@ import org.springframework.statemachine.support.DefaultStateMachineContext;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class BeerOrderManagerImpl implements BeerOrderManager {
@@ -26,13 +28,24 @@ public class BeerOrderManagerImpl implements BeerOrderManager {
         beerOrder.setOrderStatus(BeerOrderStatusEnum.NEW);
 
         BeerOrder savedBeerOrder = beerOrderRepository.save(beerOrder);
-        sendBeerOrderEvent(beerOrder, BeerOrderStatusEnum.VALIDATED);
+        sendBeerOrderEvent(beerOrder, BeerOrderEventEnum.VALIDATE_ORDER);
         return savedBeerOrder;
     }
 
-    private void sendBeerOrderEvent(BeerOrder beerOrder, BeerOrderStatusEnum eventEnum) {
+    @Override
+    public void processValidationResult(UUID orderId, Boolean isValid) {
+        BeerOrder beerOrder = beerOrderRepository.getById(orderId);
+
+        if(isValid){
+            sendBeerOrderEvent(beerOrder,BeerOrderEventEnum.VALIDATION_PASSED);
+        } else{
+            sendBeerOrderEvent(beerOrder,BeerOrderEventEnum.VALIDATION_FAILED);
+        }
+    }
+
+    private void sendBeerOrderEvent(BeerOrder beerOrder, BeerOrderEventEnum eventEnum) {
         StateMachine<BeerOrderStatusEnum, BeerOrderEventEnum> sm = build(beerOrder);
-        Message<BeerOrderStatusEnum> msg = MessageBuilder.withPayload(eventEnum).build();
+        Message<BeerOrderEventEnum> msg = MessageBuilder.withPayload(eventEnum).build();
 
         sm.sendEvent((Mono<Message<BeerOrderEventEnum>>) msg);
     }
