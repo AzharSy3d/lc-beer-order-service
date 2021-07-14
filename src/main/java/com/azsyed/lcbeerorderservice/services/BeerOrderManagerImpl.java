@@ -15,10 +15,11 @@ import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class BeerOrderManagerImpl implements BeerOrderManager {
     public static final String ORDER_HEADER_ID = "ORDER_HEADER_ID" ;
+
     private final StateMachineFactory<BeerOrderStatusEnum, BeerOrderEventEnum> stateMachineFactory;
     private final BeerOrderRepository beerOrderRepository;
 
@@ -55,9 +56,7 @@ public class BeerOrderManagerImpl implements BeerOrderManager {
         sm.stopReactively();
 
         sm.getStateMachineAccessor()
-                .doWithAllRegions(sma -> {
-                    sma.resetStateMachineReactively(new DefaultStateMachineContext(beerOrder.getOrderStatus(), null, null, null));
-                });
+                .doWithAllRegions(sma -> sma.resetStateMachineReactively(new DefaultStateMachineContext<>(beerOrder.getOrderStatus(), null, null, null)));
         return sm;
     }
 
