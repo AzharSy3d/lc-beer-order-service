@@ -12,28 +12,32 @@ import org.springframework.statemachine.StateMachine;
 import org.springframework.statemachine.state.State;
 import org.springframework.statemachine.support.StateMachineInterceptorAdapter;
 import org.springframework.statemachine.transition.Transition;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
 @Slf4j
+@Component
 public class BeerOrderStateChangeInterceptor extends StateMachineInterceptorAdapter<BeerOrderStatusEnum, BeerOrderEventEnum> {
     private final BeerOrderRepository beerOrderRepository;
 
+    @Transactional
     @Override
-    public void preStateChange(State<BeerOrderStatusEnum, BeerOrderEventEnum> state, Message<BeerOrderEventEnum> message, Transition<BeerOrderStatusEnum, BeerOrderEventEnum> transition, StateMachine<BeerOrderStatusEnum, BeerOrderEventEnum> stateMachine, StateMachine<BeerOrderStatusEnum, BeerOrderEventEnum> rootStateMachine) {
+    public void preStateChange(State<BeerOrderStatusEnum, BeerOrderEventEnum> state, Message<BeerOrderEventEnum> message, Transition<BeerOrderStatusEnum, BeerOrderEventEnum> transition, StateMachine<BeerOrderStatusEnum, BeerOrderEventEnum> stateMachine) {
         log.debug("Pre-State Change");
 
         Optional.ofNullable(message)
-                .flatMap(msg -> Optional.ofNullable((String) msg.getHeaders().getOrDefault(BeerOrderManagerImpl.ORDER_HEADER_ID, "")))
+                .flatMap(msg -> Optional.ofNullable((String) msg.getHeaders().getOrDefault(BeerOrderManagerImpl.ORDER_ID_HEADER, " ")))
                 .ifPresent(orderId -> {
-                    log.debug("Saving State for OrderId: "+orderId+" State: "+state.getId());
+                    log.debug("Saving state for order id: " + orderId + " Status: " + state.getId());
 
                     BeerOrder beerOrder = beerOrderRepository.getById(UUID.fromString(orderId));
                     beerOrder.setOrderStatus(state.getId());
+                    beerOrder.getOrderStatus();
                     beerOrderRepository.saveAndFlush(beerOrder);
                 });
-
     }
 }
