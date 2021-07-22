@@ -128,6 +128,7 @@ public class BeerOrderManagerImplIT {
     }
 
     @Test
+    @RepeatedTest(3)
     void testFailedValidation() throws JsonProcessingException {
         BeerDto beerDto = BeerDto.builder().id(beerId).upc("12345").build();
 
