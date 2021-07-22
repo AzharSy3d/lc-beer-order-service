@@ -1,6 +1,8 @@
 package com.azsyed.lcbeerorderservice.services;
 
 import com.azsyed.brewery.model.BeerDto;
+import com.azsyed.brewery.model.events.AllocationFailureEvent;
+import com.azsyed.lcbeerorderservice.config.JmsConfig;
 import com.azsyed.lcbeerorderservice.domain.BeerOrder;
 import com.azsyed.lcbeerorderservice.domain.BeerOrderLine;
 import com.azsyed.lcbeerorderservice.domain.BeerOrderStatusEnum;
@@ -20,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.jms.core.JmsTemplate;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -29,6 +32,7 @@ import static com.github.jenspiegsa.wiremockextension.ManagedWireMockServer.with
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.okJson;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -46,6 +50,9 @@ public class BeerOrderManagerImplIT {
 
     @Autowired
     CustomerRepository customerRepository;
+
+    @Autowired
+    JmsTemplate jmsTemplate;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -148,6 +155,7 @@ public class BeerOrderManagerImplIT {
     }
 
     @Test
+    @RepeatedTest(3)
     void testAllocationFailure() throws JsonProcessingException {
         BeerDto beerDto = BeerDto.builder().id(beerId).upc("12345").build();
 
@@ -163,9 +171,14 @@ public class BeerOrderManagerImplIT {
             BeerOrder foundOrder = beerOrderRepository.findById(beerOrder.getId()).get();
             assertEquals(BeerOrderStatusEnum.ALLOCATION_EXCEPTION, foundOrder.getOrderStatus());
         });
+        AllocationFailureEvent allocationFailureEvent = (AllocationFailureEvent) jmsTemplate.receiveAndConvert(JmsConfig.ALLOCATE_FAILURE_QUEUE);
+
+        assertNotNull(allocationFailureEvent);
+        assertThat(allocationFailureEvent.getOrderId()).isEqualTo(savedBeerOrder.getId());
     }
 
     @Test
+    @RepeatedTest(3)
     void testPartialAllocation() throws JsonProcessingException {
         BeerDto beerDto = BeerDto.builder().id(beerId).upc("12345").build();
 
