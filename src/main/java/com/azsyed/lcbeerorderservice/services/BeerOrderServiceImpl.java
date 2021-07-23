@@ -27,7 +27,6 @@ import com.azsyed.lcbeerorderservice.repositories.CustomerRepository;
 import com.azsyed.lcbeerorderservice.web.mappers.BeerOrderMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -43,12 +42,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BeerOrderServiceImpl implements BeerOrderService {
 
+
     private final BeerOrderRepository beerOrderRepository;
     private final CustomerRepository customerRepository;
     private final BeerOrderMapper beerOrderMapper;
-    private final ApplicationEventPublisher publisher;
     private final BeerOrderManager beerOrderManager;
-
 
     @Override
     public BeerOrderPagedList listOrders(UUID customerId, Pageable pageable) {
@@ -82,13 +80,13 @@ public class BeerOrderServiceImpl implements BeerOrderService {
             beerOrder.setOrderStatus(BeerOrderStatusEnum.NEW);
 
             beerOrder.getBeerOrderLines().forEach(line -> line.setBeerOrder(beerOrder));
+
             BeerOrder savedBeerOrder = beerOrderManager.newBeerOrder(beerOrder);
 
             log.debug("Saved Beer Order: " + beerOrder.getId());
 
             return beerOrderMapper.beerOrderToDto(savedBeerOrder);
         }
-
         //todo add exception type
         throw new RuntimeException("Customer Not Found");
     }
@@ -103,17 +101,17 @@ public class BeerOrderServiceImpl implements BeerOrderService {
         beerOrderManager.beerOrderPickedUp(orderId);
     }
 
-    private BeerOrder getOrder(UUID customerId, UUID orderId) {
+    private BeerOrder getOrder(UUID customerId, UUID orderId){
         Optional<Customer> customerOptional = customerRepository.findById(customerId);
 
-        if (customerOptional.isPresent()) {
+        if(customerOptional.isPresent()){
             Optional<BeerOrder> beerOrderOptional = beerOrderRepository.findById(orderId);
 
-            if (beerOrderOptional.isPresent()) {
+            if(beerOrderOptional.isPresent()){
                 BeerOrder beerOrder = beerOrderOptional.get();
 
                 // fall to exception if customer id's do not match - order not for customer
-                if (beerOrder.getCustomer().getId().equals(customerId)) {
+                if(beerOrder.getCustomer().getId().equals(customerId)){
                     return beerOrder;
                 }
             }

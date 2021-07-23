@@ -16,7 +16,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jenspiegsa.wiremockextension.WireMockExtension;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,7 +82,6 @@ public class BeerOrderManagerImplIT {
     }
 
     @Test
-    @RepeatedTest(5)
     void testNewToAllocated() throws JsonProcessingException, InterruptedException {
         BeerDto beerDto = BeerDto.builder().id(beerId).upc("12345").build();
 
@@ -193,12 +191,11 @@ public class BeerOrderManagerImplIT {
         });
     }
 
-
     @Test
     void testValidationPendingToCancel() throws JsonProcessingException {
         BeerDto beerDto = BeerDto.builder().id(beerId).upc("12345").build();
 
-        wireMockServer.stubFor(get(BeerServiceRestTemplateImpl.V1_BEER_BY_UPC_PATH + "12345")
+        wireMockServer.stubFor(get(BeerServiceRestTemplateImpl.V1_BEER_BY_UPC_PATH  + "12345")
                 .willReturn(okJson(objectMapper.writeValueAsString(beerDto))));
 
         BeerOrder beerOrder = createBeerOrder();
@@ -220,7 +217,6 @@ public class BeerOrderManagerImplIT {
     }
 
     @Test
-    @RepeatedTest(2)
     void testAllocationPendingToCancel() throws JsonProcessingException {
         BeerDto beerDto = BeerDto.builder().id(beerId).upc("12345").build();
 
@@ -246,7 +242,6 @@ public class BeerOrderManagerImplIT {
     }
 
     @Test
-    @RepeatedTest(3)
     void testAllocatedToCancel() throws JsonProcessingException {
         BeerDto beerDto = BeerDto.builder().id(beerId).upc("12345").build();
 
