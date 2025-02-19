@@ -35,6 +35,12 @@ public class TastingRoomService {
         beerUpcs.add(BeerOrderBootStrap.BEER_2_UPC);
         beerUpcs.add(BeerOrderBootStrap.BEER_3_UPC);
     }
+    
+    /**
+     * Places an order in the tasting room.
+     * 
+     * This method handles the logic to place an order for a tasting room. It requires no parameters and returns nothing.
+     */
 
     @Transactional
     @Scheduled(fixedRate = 2000) //run every 2 seconds
@@ -48,6 +54,12 @@ public class TastingRoomService {
             log.error("Too many or too few tasting room customers found");
         }
     }
+    
+    /**
+     * Places an order for a customer using the provided customer details.
+     *
+     * @param customer The Customer object containing the necessary details to place an order.
+     */
 
     private void doPlaceOrder(Customer customer) {
         String beerToOrder = getRandomBeerUpc();
@@ -70,6 +82,12 @@ public class TastingRoomService {
         log.info("Order Placed");
 
     }
+    
+    /**
+     * Generates a random barcode for a beer product.
+     *
+     * @return A randomly generated 12-digit string representing a beer UPC.
+     */
 
     private String getRandomBeerUpc() {
         return beerUpcs.get(new Random().nextInt(beerUpcs.size() - 0));
