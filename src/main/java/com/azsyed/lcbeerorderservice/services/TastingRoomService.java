@@ -35,6 +35,20 @@ public class TastingRoomService {
         beerUpcs.add(BeerOrderBootStrap.BEER_2_UPC);
         beerUpcs.add(BeerOrderBootStrap.BEER_3_UPC);
     }
+    
+    /**
+     * Places an order for a tasting room experience in the system.
+     *
+     * This method handles the process of placing an order for a tasting room experience, including validating the user's eligibility,
+     * updating inventory, and generating a confirmation message. It requires the user ID to determine the customer details and the
+     * product ID to specify which tasting room experience is being ordered.
+     *
+     * @param userId The unique identifier of the user making the order (UUID format).
+     * @param productId The unique identifier of the tasting room experience product.
+     * @throws IllegalArgumentException if the user or product ID is invalid.
+     * @throws InsufficientInventoryException if there are not enough inventory items available for the order.
+     * @throws OrderPlacementException if an error occurs during the order placement process.
+     */
 
     @Transactional
     @Scheduled(fixedRate = 2000) //run every 2 seconds
@@ -48,6 +62,13 @@ public class TastingRoomService {
             log.error("Too many or too few tasting room customers found");
         }
     }
+    
+    /**
+     * Places an order for a given customer.
+     *
+     * @param customer The Customer object representing the buyer.
+     * @throws OrderException If there is an error during the order placement process.
+     */
 
     private void doPlaceOrder(Customer customer) {
         String beerToOrder = getRandomBeerUpc();
@@ -70,6 +91,12 @@ public class TastingRoomService {
         log.info("Order Placed");
 
     }
+    
+    /**
+     * Generates and returns a random Beer UPC (Universal Product Code).
+     *
+     * @return A randomly generated string representing a Beer UPC.
+     */
 
     private String getRandomBeerUpc() {
         return beerUpcs.get(new Random().nextInt(beerUpcs.size() - 0));
