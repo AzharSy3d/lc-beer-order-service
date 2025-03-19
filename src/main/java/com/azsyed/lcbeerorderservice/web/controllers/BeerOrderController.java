@@ -39,6 +39,14 @@ public class BeerOrderController {
         this.beerOrderService = beerOrderService;
     }
 
+    /**
+     * Retrieves a paginated list of beer orders for a given customer.
+     *
+     * @param customerId the ID of the customer whose orders are to be retrieved
+     * @param pageNumber the page number of the results (optional)
+     * @param pageSize the size of each page (optional)
+     * @return a list of beer orders
+     */
     @GetMapping("orders")
     public BeerOrderPagedList listOrders(@PathVariable("customerId") UUID customerId,
                                          @RequestParam(value = "pageNumber", required = false) Integer pageNumber,
@@ -55,17 +63,37 @@ public class BeerOrderController {
         return beerOrderService.listOrders(customerId, PageRequest.of(pageNumber, pageSize));
     }
 
+    /**
+     * Places a new beer order for a given customer.
+     *
+     * @param customerId the ID of the customer placing the order
+     * @param beerOrderDto the details of the beer order to be placed
+     * @return the created beer order
+     */
     @PostMapping("orders")
     @ResponseStatus(HttpStatus.CREATED)
     public BeerOrderDto placeOrder(@PathVariable("customerId") UUID customerId, @RequestBody BeerOrderDto beerOrderDto) {
         return beerOrderService.placeOrder(customerId, beerOrderDto);
     }
 
+    /**
+     * Retrieves a specific beer order by customer and order IDs.
+     *
+     * @param customerId the ID of the customer associated with the order
+     * @param orderId the ID of the beer order to retrieve
+     * @return the specified beer order
+     */
     @GetMapping("orders/{orderId}")
     public BeerOrderDto getOrder(@PathVariable("customerId") UUID customerId, @PathVariable("orderId") UUID orderId) {
         return beerOrderService.getOrderById(customerId, orderId);
     }
 
+    /**
+     * Marks a beer order as picked up by the customer.
+     *
+     * @param customerId the ID of the customer picking up the order
+     * @param orderId the ID of the beer order being picked up
+     */
     @PutMapping("/orders/{orderId}/pickup")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void pickupOrder(@PathVariable("customerId") UUID customerId, @PathVariable("orderId") UUID orderId) {

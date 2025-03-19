@@ -21,6 +21,14 @@ public class CustomerController {
 
     private final CustomerService customerService;
 
+    /**
+     * Retrieves a paginated list of customers.
+     *
+     * @param pageNumber The page number to retrieve. If not provided, defaults to 1.
+     * @param pageSize   The number of customers per page. If not provided, defaults to 10.
+     * @return A {@link CustomerPagedList} containing the requested page of customers.
+     * @throws IllegalArgumentException if either pageNumber or pageSize is negative.
+     */
     @GetMapping
     public CustomerPagedList listCustomers(@RequestParam(value = "pageNumber", required = false) Integer pageNumber,
                                            @RequestParam(value = "pageSize", required = false) Integer pageSize){

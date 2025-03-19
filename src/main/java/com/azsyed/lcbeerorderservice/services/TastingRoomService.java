@@ -36,6 +36,13 @@ public class TastingRoomService {
         beerUpcs.add(BeerOrderBootStrap.BEER_3_UPC);
     }
 
+    /**
+     * Places an order in the tasting room.
+     * <p>
+     * This method is responsible for initiating the ordering process in the tasting room. It will call the helper method {@link #doPlaceOrder(Customer)} to perform the actual ordering logic.
+     *
+     * @throws IllegalArgumentException if no customer is provided
+     */
     @Transactional
     @Scheduled(fixedRate = 2000) //run every 2 seconds
     public void placeTastingRoomOrder() {
@@ -49,6 +56,14 @@ public class TastingRoomService {
         }
     }
 
+    /**
+     * Performs the actual order placement for a given customer.
+     * <p>
+     * This private method takes care of placing an order for the provided customer. It may involve querying databases, updating inventory, and communicating with external services.
+     *
+     * @param customer The customer for whom the order is being placed. Must not be null.
+     * @throws IllegalArgumentException if the customer parameter is null
+     */
     private void doPlaceOrder(Customer customer) {
         String beerToOrder = getRandomBeerUpc();
 
@@ -71,6 +86,13 @@ public class TastingRoomService {
 
     }
 
+    /**
+     * Retrieves a random beer UPC (Universal Product Code).
+     * <p>
+     * This method generates and returns a random UPC number that corresponds to a beer product. The UPC generated should be valid according to the standard format.
+     *
+     * @return A string representing a randomly generated beer UPC
+     */
     private String getRandomBeerUpc() {
         return beerUpcs.get(new Random().nextInt(beerUpcs.size() - 0));
     }
