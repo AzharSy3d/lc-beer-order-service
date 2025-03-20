@@ -39,6 +39,14 @@ public class BeerOrderController {
         this.beerOrderService = beerOrderService;
     }
 
+    /**
+     * Lists orders for a specific customer.
+     *
+     * @param customerId The unique identifier of the customer.
+     * @param pageNumber The page number of results to return (optional).
+     * @param pageSize The size of each page of results (optional).
+     * @return A paged list of BeerOrderDto objects for the specified customer.
+     */
     @GetMapping("orders")
     public BeerOrderPagedList listOrders(@PathVariable("customerId") UUID customerId,
                                          @RequestParam(value = "pageNumber", required = false) Integer pageNumber,
@@ -55,17 +63,39 @@ public class BeerOrderController {
         return beerOrderService.listOrders(customerId, PageRequest.of(pageNumber, pageSize));
     }
 
+    /**
+     * Places a new order for a customer.
+     *
+     * @param customerId The unique identifier of the customer.
+     * @param beerOrderDto The details of the order to place.
+     * @return The placed BeerOrderDto object.
+     */
     @PostMapping("orders")
     @ResponseStatus(HttpStatus.CREATED)
     public BeerOrderDto placeOrder(@PathVariable("customerId") UUID customerId, @RequestBody BeerOrderDto beerOrderDto) {
         return beerOrderService.placeOrder(customerId, beerOrderDto);
     }
 
+    /**
+     * Retrieves an order by its ID for a specific customer.
+     *
+     * @param customerId The unique identifier of the customer.
+     * @param orderId The unique identifier of the order.
+     * @return The specified BeerOrderDto object if found; throws NotFoundException otherwise.
+     */
     @GetMapping("orders/{orderId}")
     public BeerOrderDto getOrder(@PathVariable("customerId") UUID customerId, @PathVariable("orderId") UUID orderId) {
         return beerOrderService.getOrderById(customerId, orderId);
     }
 
+    /**
+     * Marks an order as picked up by a customer.
+     *
+     * @param customerId The unique identifier of the customer.
+     * @param orderId The unique identifier of the order to pick up.
+     * @throws NotFoundException If the order is not found.
+     * @throws IllegalStateException If the order cannot be picked up at this time (e.g., already picked up).
+     */
     @PutMapping("/orders/{orderId}/pickup")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void pickupOrder(@PathVariable("customerId") UUID customerId, @PathVariable("orderId") UUID orderId) {
